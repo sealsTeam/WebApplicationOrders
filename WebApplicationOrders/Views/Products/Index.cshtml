@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MvcMovie.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Товары</h1>
+
+<p>
+    <a asp-action="Create">Добавить новый товар</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Наименование
+            </th>
+            <th>
+                Вес (в кг)
+            </th>
+            <th>
+                Цена
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

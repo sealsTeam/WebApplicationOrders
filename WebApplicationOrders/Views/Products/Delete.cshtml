@@ -1,0 +1,39 @@
+﻿@model MvcMovie.Models.Product
+
+@{
+    ViewData["Title"] = "Панель удаления товара";
+}
+
+<h1>Панель удаления товара</h1>
+
+<h3>Вы уверены, что хотите удалить данный товар?</h3>
+<div>
+    <hr />
+    <dl class="row">
+
+        <dt class = "col-sm-2">
+            Наименование:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Вес:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+        <dt class = "col-sm-2">
+            Цена:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад</a>
+    </form>
+</div>
