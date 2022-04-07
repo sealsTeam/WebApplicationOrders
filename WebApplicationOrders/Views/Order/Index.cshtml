@@ -1,0 +1,81 @@
+﻿@model IEnumerable<WebApplicationOrders.Models.Order>
+
+@{
+    ViewData["Index"] = "Заказы";
+}
+
+<h1>Заказы</h1>
+
+<p>
+    <a asp-action="Create">Добавить новый заказ</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>             
+            <th>
+                Номер заказа
+            </th>      
+            
+            <th>
+                Заказанный товар
+            </th>
+
+            <th>
+                Город отправителя
+            </th>
+            <th>
+                Город получателя
+            </th>             
+            <th>
+                Адрес отправителя
+            </th>             
+            <th>
+                Адрес получателя
+            </th>             
+            <th>
+                Вес груза
+            </th>             
+            <th>
+                Дата забора груза
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemOrdered)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.SenderCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipientCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SenderAddress)
+            </td> 
+                        
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressRecipient)
+            </td>             
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalWeight)
+            </td>             
+            <td>
+                @Html.DisplayFor(modelItem => item.PickupDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

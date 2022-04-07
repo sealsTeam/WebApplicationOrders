@@ -1,4 +1,4 @@
-﻿@model MvcMovie.Models.Product
+﻿@model WebApplicationOrders.Models.Product
 
 @{
     ViewData["Title"] = "Панель изменения товара";
@@ -18,7 +18,7 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Weight" class="control-label">Вес:</label>
+                <label asp-for="Weight" class="control-label">Вес (в кг):</label>
                 <input asp-for="Weight" class="form-control" />
                 <span asp-validation-for="Weight" class="text-danger"></span>
             </div>
@@ -38,6 +38,3 @@
     <a asp-action="Index">Назад</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

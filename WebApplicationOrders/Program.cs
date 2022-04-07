@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MvcMovie.Data;
-using MvcMovie.Models;
+using WebApplicationOrders.Data;
+using WebApplicationOrders.Models;
 using System;
 using WebApplicationOrders;
 
-namespace MvcMovie
+namespace WebApplicationOrders
 {
     public class Program
     {

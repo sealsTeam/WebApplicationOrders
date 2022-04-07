@@ -1,0 +1,69 @@
+﻿@model WebApplicationOrders.Models.Order
+
+@{
+    ViewData["Index"] = "Панель удаления заказа";
+}
+
+<h1>Панель удаления заказа</h1>
+
+<h3>Вы уверены, что хотите удалить данный заказ?</h3>
+<div>
+    <hr />
+    <dl class="row">         
+        <dt class = "col-sm-2">
+            Номер заказа:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            Заказанный товар:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ItemOrdered)
+        </dd>
+        <dt class = "col-sm-2">
+            Город отправителя:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SenderCity)
+        </dd>
+        <dt class = "col-sm-2">
+            Город получателя:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RecipientCity)
+        </dd>
+        <dt class = "col-sm-2">
+            Адрес отправителя:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SenderAddress)
+        </dd>
+        <dt class = "col-sm-2">
+            Адрес получателя:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AddressRecipient)
+        </dd>         
+        <dt class = "col-sm-2">
+            Вес груза:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotalWeight)
+        </dd>         
+        <dt class = "col-sm-2">
+            Дата забора груза:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PickupDate)
+        </dd>
+
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад</a>
+    </form>
+</div>

@@ -1,49 +1,60 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WebApplicationOrders.Data;
 using WebApplicationOrders.Models;
 
 namespace WebApplicationOrders.Controllers
 {
-    public class ProductsController : Controller
+    public class OrderController : Controller
     {
-        private readonly PagesProductsContext _context;
+        private PagesProductsContext _context;
 
-        public ProductsController(PagesProductsContext context)
+        public OrderController(PagesProductsContext context)
         {
             _context = context;
         }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            OrderVM model = new OrderVM
+            {
+                ProductItems = _context.Product.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }).ToList(),
+                Order = new Order()
+            };
 
-      
+            return View(model);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
+            return View(await _context.Order.ToListAsync());
         }
 
-     
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-   
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Weight,Price")] Product product)
+        public async Task<IActionResult> Create( Order order)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                //order.ItemOrdered = ItemOrdered;
+                _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(order);
         }
 
-       
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -51,20 +62,20 @@ namespace WebApplicationOrders.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Product.FindAsync(id);
-            if (movie == null)
+            var order = await _context.Order.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            return View(order);
         }
 
-     
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Weight,Price")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ItemOrdered,SenderCity,RecipientCity,SenderAddress,AddressRecipient,TotalWeight,PickupDate")] Order order)
         {
-            if (id != product.Id)
+            if (id != order.Id)
             {
                 return NotFound();
             }
@@ -73,12 +84,12 @@ namespace WebApplicationOrders.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(order);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(product.Id))
+                    if (!MovieExists(order.Id))
                     {
                         return NotFound();
                     }
@@ -89,10 +100,10 @@ namespace WebApplicationOrders.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(order);
         }
 
-       
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -100,30 +111,33 @@ namespace WebApplicationOrders.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Product
+            var order = await _context.Order
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(order);
         }
 
-    
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Product.FindAsync(id);
-            _context.Product.Remove(movie);
+            var order = await _context.Order.FindAsync(id);
+            _context.Order.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-            return _context.Product.Any(e => e.Id == id);
+            return _context.Order.Any(e => e.Id == id);
         }
     }
+
+
+
 }

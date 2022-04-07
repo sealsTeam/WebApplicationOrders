@@ -1,0 +1,62 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model WebApplicationOrders.Models.OrderVM
+
+@{
+    ViewData["Index"] = "Панель добавления заказа";
+}
+
+<h1>Панель добавления заказа</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>             
+            
+            <div class="form-group">
+                <select asp-for="Order.ItemOrdered" asp-items="@Model.ProductItems" multiple class="form-control">
+                        </select>
+            </div> 
+
+            <div class="form-group">
+                <label asp-for="Order.SenderCity" class="control-label">Город отправителя:</label>
+                <input asp-for="Order.SenderCity" class="form-control" />
+                <span asp-validation-for="Order.SenderCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.RecipientCity" class="control-label">Город получателя:</label>
+                <input asp-for="Order.RecipientCity" class="form-control" />
+                <span asp-validation-for="Order.RecipientCity" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="Order.SenderAddress" class="control-label">Адрес отправителя:</label>
+                <input asp-for="Order.SenderAddress" class="form-control" />
+                <span asp-validation-for="Order.SenderAddress" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="Order.AddressRecipient" class="control-label">Адрес получателя:</label>
+                <input asp-for="Order.AddressRecipient" class="form-control" />
+                <span asp-validation-for="Order.AddressRecipient" class="text-danger"></span>
+            </div>             
+            <div class="form-group">
+                <label asp-for="Order.TotalWeight" class="control-label">Вес груза:</label>
+                <input asp-for="Order.TotalWeight" class="form-control" />
+                <span asp-validation-for="Order.TotalWeight" class="text-danger"></span>
+            </div>             
+            <div class="form-group">
+                <label asp-for="Order.PickupDate" class="control-label">Дата забора груза:</label>
+                <input asp-for="Order.PickupDate" class="form-control" />
+                <span asp-validation-for="Order.PickupDate" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary"  />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>
+

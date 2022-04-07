@@ -1,0 +1,59 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model WebApplicationOrders.Models.Order
+
+@{
+    ViewData["Index"] = "Панель изменения заказа";
+}
+
+<h1>Панель изменения заказа</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" /> 
+            <div class="form-group">
+                <select asp-for="ItemOrdered" multiple class="form-control">
+                        </select>
+            </div>              
+             <div class="form-group">
+                <label asp-for="SenderCity" class="control-label">Город отправителя:</label>
+                <input asp-for="SenderCity" class="form-control" />
+                <span asp-validation-for="SenderCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipientCity" class="control-label">Город получателя:</label>
+                <input asp-for="RecipientCity" class="form-control" />
+                <span asp-validation-for="RecipientCity" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="SenderAddress" class="control-label">Адрес отправителя:</label>
+                <input asp-for="SenderAddress" class="form-control" />
+                <span asp-validation-for="SenderAddress" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="AddressRecipient" class="control-label">Адрес получателя:</label>
+                <input asp-for="AddressRecipient" class="form-control" />
+                <span asp-validation-for="AddressRecipient" class="text-danger"></span>
+            </div>             
+            <div class="form-group">
+                <label asp-for="TotalWeight" class="control-label">Вес груза:</label>
+                <input asp-for="TotalWeight" class="form-control" />
+                <span asp-validation-for="TotalWeight" class="text-danger"></span>
+            </div>             
+            <div class="form-group">
+                <label asp-for="PickupDate" class="control-label">Дата забора груза:</label>
+                <input asp-for="PickupDate" class="form-control" />
+                <span asp-validation-for="PickupDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>
+

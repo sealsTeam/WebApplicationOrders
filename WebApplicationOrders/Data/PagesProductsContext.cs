@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MvcMovie.Models;
+using WebApplicationOrders.Models;
 
-namespace MvcMovie.Data
+namespace WebApplicationOrders.Data
 {
     public class PagesProductsContext : DbContext
     {
@@ -11,5 +11,8 @@ namespace MvcMovie.Data
         }
 
         public DbSet<Product> Product { get; set; }
+
+        public DbSet<Order> Order { get; set; }
+
     }
 }
