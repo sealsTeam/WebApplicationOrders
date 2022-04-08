@@ -10,8 +10,8 @@ using WebApplicationOrders.Data;
 namespace WebApplicationOrders.Migrations
 {
     [DbContext(typeof(PagesProductsContext))]
-    [Migration("20220407162548_AppendTableProduct")]
-    partial class AppendTableProduct
+    [Migration("20220408161616_Create")]
+    partial class Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

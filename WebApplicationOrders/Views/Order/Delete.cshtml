@@ -20,7 +20,13 @@
             Заказанный товар:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ItemOrdered)
+            
+            <select class ="form-select form-select-sm"  aria-label=".form-select-sm example"> 
+                        @foreach(var product in Model.ItemOrdered)
+                        {
+                            <option>@product.Name</option>
+                        }
+                    </select>
         </dd>
         <dt class = "col-sm-2">
             Город отправителя:

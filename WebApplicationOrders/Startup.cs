@@ -55,7 +55,7 @@ namespace WebApplicationOrders
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Products}/{action=Index}/{id?}");
+                    pattern: "{controller=Order}/{action=Index}/{id?}");
             });
         }
     }

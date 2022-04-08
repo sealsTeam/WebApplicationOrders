@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplicationOrders.Data;
@@ -36,17 +36,23 @@ namespace WebApplicationOrders.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Order.ToListAsync());
+            return View(await _context.Order.Include(o => o.ItemOrdered).ToListAsync());
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Order order)
+        public async Task<IActionResult> Create(Order order)
         {
             if (ModelState.IsValid)
             {
-                //order.ItemOrdered = ItemOrdered;
+                string[] fruitIds = Request.Form["Order.ItemOrdered"].ToString().Split(",");
+                foreach (string fruitId in fruitIds)
+                {
+                    var product = _context.Product.Find(Convert.ToInt32(fruitId));
+                    order.ItemOrdered.Add(product);
+                }
+
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -55,52 +61,54 @@ namespace WebApplicationOrders.Controllers
         }
 
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
+            if (id == 0 || id < 0)
             {
                 return NotFound();
             }
 
-            var order = await _context.Order.FindAsync(id);
-            if (order == null)
+            OrderVM model = new OrderVM
             {
-                return NotFound();
-            }
-            return View(order);
+                ProductItems = _context.Product.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }).ToList(),
+                Order = _context.Order.Find(id)
+
+            };
+            return View(model);
         }
+
+
+
+
+
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ItemOrdered,SenderCity,RecipientCity,SenderAddress,AddressRecipient,TotalWeight,PickupDate")] Order order)
+        public async Task<IActionResult> Edit(int id , Order order)
         {
-            if (id != order.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                string[] fruitIds = Request.Form["Order.ItemOrdered"].ToString().Split(",");
+                var products = _context.Order.Include(x => x.ItemOrdered).FirstOrDefault(x => x.Id == id );
+                products.ItemOrdered.Clear();
+
+                foreach (string fruitId in fruitIds)
                 {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
+                    var product = _context.Product.Find(Convert.ToInt32(fruitId)); 
+                    products.ItemOrdered.Add(product);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                _context.Update(products);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(order);
+
         }
 
 
@@ -111,8 +119,8 @@ namespace WebApplicationOrders.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var order = await _context.Order.Include(x => x.ItemOrdered).FirstOrDefaultAsync(x => x.Id == id);
+                
             if (order == null)
             {
                 return NotFound();
