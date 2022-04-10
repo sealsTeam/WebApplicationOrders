@@ -93,17 +93,35 @@ namespace WebApplicationOrders.Controllers
         {
             if (ModelState.IsValid)
             {
-                string[] fruitIds = Request.Form["Order.ItemOrdered"].ToString().Split(",");
-                var products = _context.Order.Include(x => x.ItemOrdered).FirstOrDefault(x => x.Id == id );
-                products.ItemOrdered.Clear();
-
-                foreach (string fruitId in fruitIds)
+                string[] Ids = Request.Form["Order.ItemOrdered"].ToString().Split(",");
+                var order_products = _context.Order.Include(x => x.ItemOrdered).FirstOrDefault(x => x.Id == id);
+                int i = 0;
+                foreach (string itemId in Ids)
                 {
-                    var product = _context.Product.Find(Convert.ToInt32(fruitId)); 
-                    products.ItemOrdered.Add(product);
+                    if (itemId != "")
+                    {
+                        if (i == 0)
+                        {
+                            i = 1;
+                            order_products.ItemOrdered.Clear();
+                        }
+                        var product = _context.Product.Find(Convert.ToInt32(itemId));
+                        order_products.ItemOrdered.Add(product);
+                    }
+
                 }
 
-                _context.Update(products);
+                var update_order = _context.Order.FirstOrDefault(o => o.Id == id);
+                if (update_order != null)
+                {
+                    update_order.SenderCity = order.SenderCity;
+                    update_order.SenderAddress = update_order.SenderAddress;
+                    update_order.AddressRecipient = order.AddressRecipient;
+                    update_order.PickupDate = order.PickupDate;
+                    update_order.RecipientCity = order.RecipientCity;
+                    update_order.ItemOrdered = order_products.ItemOrdered;
+                    _context.Order.Update(update_order);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
